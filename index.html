@@ -4,7 +4,34 @@
 <meta charset="UTF-8">
 <title>Electronic Travel Authorization</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
+/* Loader Style */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f4f6f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  color: #1b5fa7;
+  font-size: 18px;
+  z-index: 9999;
+}
+#loader img {
+  width: 120px;
+  margin-bottom: 15px;
+}
+body.loaded #loader {
+  display: none;
+}
+
+/* Main Container */
 body {
   font-family: Arial, sans-serif;
   background: #f4f6f8;
@@ -21,11 +48,12 @@ body {
 h2 {
   color: #1b5fa7;
 }
-img {
+img.user-photo {
   width: 180px;
   height: 200px;
   object-fit: cover;
   border: 1px solid #ccc;
+  margin-bottom: 10px;
 }
 .label {
   font-weight: bold;
@@ -43,10 +71,21 @@ img {
 </head>
 
 <body>
+
+<!-- Loader Screen -->
+<div id="loader">
+  <img src="https://i.imgur.com/Ix9C9UL.png" alt="Banner">
+  <div>Loading, please wait...</div>
+</div>
+
+<!-- Main Content -->
 <div class="container">
+  <!-- Top Banner -->
+  <img src="https://i.imgur.com/Ix9C9UL.png" alt="Banner" style="width:100%; height:auto; border-radius:6px; margin-bottom:15px;">
+
   <h2>Electronic Travel Authorization</h2>
   <p id="eid"></p>
-  <img id="photo" alt="Photo">
+  <img id="photo" class="user-photo" alt="Photo">
 
   <div class="label">NAME</div>
   <div class="value" id="name"></div>
@@ -76,21 +115,29 @@ function formatDate(dateStr) {
   });
 }
 
+// Get ID from URL
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
+// Fetch data from API
 fetch("https://script.google.com/macros/s/AKfycbxqVN-8dypMA5peql6O0eOO3uk0NPzvkicqJ9k_4P0Zyes-LWiaK0CGRXgeCa9PaeWr/exec?id=" + id)
 .then(res => res.json())
 .then(data => {
+  // Hide loader
+  document.body.classList.add('loaded');
+
   document.getElementById("eid").innerText = "- " + data.id;
   document.getElementById("name").innerText = data.name;
   document.getElementById("passport").innerText = data.passport;
   document.getElementById("country").innerText = data.country;
   document.getElementById("submission").innerText = formatDate(data.submission);
   document.getElementById("valid").innerText = formatDate(data.valid);
+
+  // Update photo
   document.getElementById("photo").src = data.photo;
 })
 .catch(() => {
+  document.body.classList.add('loaded');
   document.body.innerHTML = "<h2 style='text-align:center;color:red'>Record Not Found</h2>";
 });
 </script>
