@@ -8,7 +8,7 @@
 <!-- Google Fonts / Poppins -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-<!-- External Styles (original site inspired) -->
+<!-- External Styles -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
@@ -24,26 +24,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  font-family: 'Poppins', sans-serif;
-  color: #1b5fa7;
-  font-size: 18px;
   z-index: 9999;
+  transition: opacity 0.5s ease;
 }
 #loader img {
   width: 120px;
 }
 body.loaded #loader {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
-/* Main Container */
+/* Body */
 body {
   font-family: 'Poppins', sans-serif;
   background: #f4f6f8;
   margin: 0;
   color: #444;
 }
+
+/* Container */
 .container {
   max-width: 420px;
   background: #fff;
@@ -85,13 +85,13 @@ img.user-photo {
 
 /* Top Banner */
 .top-banner {
-  margin-bottom: 20px;
-  text-align: center;
+  text-align: left;
+  margin-bottom: 10px;
 }
 .top-banner img {
-  width: 100%;
-  max-height: 120px;
-  border-radius: 6px;
+  width: 200px;
+  height: auto;
+  border-radius: 4px;
   object-fit: cover;
   animation: fadeIn 1.2s ease;
 }
@@ -106,33 +106,51 @@ img.user-photo {
   100% { opacity: 1; }
 }
 
-/* Desktop Menu */
+/* Footer COPYRIGHT */
+#copyright {
+  text-align: center;
+  font-size: 12px;
+  color: #777;
+  margin-top: 30px;
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+}
+
+/* Desktop Navigation */
 .desktop-menu {
   display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin-bottom: 20px;
+  justify-content: flex-end;
+  gap: 15px;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  z-index: 998;
 }
 .desktop-menu a {
   text-decoration: none;
   color: #1b5fa7;
-  font-weight: 600;
-  transition: color 0.2s;
+  font-weight: 500;
 }
 .desktop-menu a:hover {
   color: #44aa68;
 }
 
-/* Mobile Hamburger Menu */
+/* Mobile Navigation */
 .mobile-nav {
   display: none;
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
+  padding: 10px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  text-align: right; /* RIGHT SIDE */
 }
 .menu-icon {
   width: 30px;
+  display: inline-block;
   cursor: pointer;
 }
 .menu-icon span {
@@ -141,46 +159,32 @@ img.user-photo {
   background: #1b5fa7;
   margin: 6px 0;
   border-radius: 2px;
-  transition: 0.3s;
 }
-#mobileMenu {
+.mobile-menu {
   display: none;
   background: #ffffff;
+  border-bottom: 1px solid #ddd;
   position: absolute;
-  top: 50px;
+  top: 45px;
   right: 10px;
-  min-width: 200px;
-  border-radius: 6px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  overflow: hidden;
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0;
-  z-index: 999;
+  left: auto;
+  min-width: 150px;
 }
-#mobileMenu.show {
+.mobile-menu a {
   display: block;
-  transform: scaleY(1);
-  opacity: 1;
-}
-#mobileMenu a {
-  display: block;
-  padding: 15px 20px;
+  padding: 12px;
   text-decoration: none;
   color: #1b5fa7;
-  font-weight: 600;
-  border-bottom: 1px solid #eee;
-  text-align: right;
-  transition: background 0.2s ease, color 0.2s ease;
+  font-weight: 500;
+  border-top: 1px solid #eee;
+  text-align: right; /* RIGHT SIDE */
 }
-#mobileMenu a:hover {
+.mobile-menu a:hover {
   background: #f4f6f8;
-  color: #44aa68;
 }
 
 /* Responsive */
-@media(max-width: 768px) {
+@media (max-width: 768px) {
   .desktop-menu { display: none; }
   .mobile-nav { display: block; }
 }
@@ -195,12 +199,7 @@ img.user-photo {
 
 <!-- Loader Screen -->
 <div id="loader">
-  <img src="https://i.imgur.com/XA4Ev2E.gif" alt="Loading">
-</div>
-
-<!-- Top Banner -->
-<div class="top-banner">
-  <img src="https://i.imgur.com/Ix9C9UL.png" alt="Banner" style="width: 100px; float: left;">
+  <img src="https://i.imgur.com/XA4Ev2E.gif" alt="Loading...">
 </div>
 
 <!-- Desktop Menu -->
@@ -212,7 +211,7 @@ img.user-photo {
   <a href="#">Contact Us</a>
 </div>
 
-<!-- Mobile Hamburger Menu -->
+<!-- Mobile Menu -->
 <div class="mobile-nav">
   <div class="menu-icon" onclick="toggleMenu()">
     <span></span>
@@ -220,7 +219,7 @@ img.user-photo {
     <span></span>
   </div>
 </div>
-<div id="mobileMenu">
+<div id="mobileMenu" class="mobile-menu">
   <a href="#">Home</a>
   <a href="#">Guidelines</a>
   <a href="#">Downloads</a>
@@ -230,6 +229,10 @@ img.user-photo {
 
 <!-- Main Content -->
 <div class="container">
+  <div class="top-banner">
+    <img src="https://i.imgur.com/Ix9C9UL.png" alt="Banner">
+  </div>
+
   <h2>Electronic Travel Authorization</h2>
   <p id="eid"></p>
   <img id="photo" class="user-photo" alt="Photo">
@@ -249,7 +252,12 @@ img.user-photo {
   <div class="label">ETA Valid Upto</div>
   <div class="value" id="valid"></div>
 
-  <div class="footer">COPYRIGHT © 2015 - 2026 MINISTRY OF INTERIOR, GOVERNMENT OF PAKISTAN</div>
+  <div class="footer">Status: Verified</div>
+</div>
+
+<!-- COPYRIGHT Footer -->
+<div id="copyright">
+COPYRIGHT © 2015 - 2026 MINISTRY OF INTERIOR, GOVERNMENT OF PAKISTAN
 </div>
 
 <script>
@@ -265,13 +273,14 @@ function formatDate(dateStr) {
 // Mobile menu toggle
 function toggleMenu() {
   const menu = document.getElementById("mobileMenu");
-  menu.classList.toggle("show");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 
-// Fetch ID from URL and data
+// Get ID from URL
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
+// Fetch data from API
 fetch("https://script.google.com/macros/s/AKfycbxqVN-8dypMA5peql6O0eOO3uk0NPzvkicqJ9k_4P0Zyes-LWiaK0CGRXgeCa9PaeWr/exec?id=" + id)
 .then(res => res.json())
 .then(data => {
