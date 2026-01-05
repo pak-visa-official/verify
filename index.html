@@ -146,9 +146,11 @@ img.user-photo {
   position: sticky;
   top: 0;
   z-index: 999;
+  text-align: right; /* RIGHT SIDE */
 }
 .menu-icon {
   width: 30px;
+  display: inline-block;
   cursor: pointer;
 }
 .menu-icon span {
@@ -162,6 +164,11 @@ img.user-photo {
   display: none;
   background: #ffffff;
   border-bottom: 1px solid #ddd;
+  position: absolute;
+  top: 45px;
+  right: 10px;
+  left: auto;
+  min-width: 150px;
 }
 .mobile-menu a {
   display: block;
@@ -170,6 +177,7 @@ img.user-photo {
   color: #1b5fa7;
   font-weight: 500;
   border-top: 1px solid #eee;
+  text-align: right; /* RIGHT SIDE */
 }
 .mobile-menu a:hover {
   background: #f4f6f8;
