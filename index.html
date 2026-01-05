@@ -5,6 +5,13 @@
 <title>Electronic Travel Authorization</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Google Fonts / Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- External Styles (original site inspired) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
 <style>
 /* Loader Style */
 #loader {
@@ -18,35 +25,43 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-family: Arial, sans-serif;
-  color: #1b5fa7;
-  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
   z-index: 9999;
+  transition: opacity 0.5s ease;
 }
 #loader img {
   width: 120px;
-  margin-bottom: 15px;
+  animation: bounce 1s infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
 }
 body.loaded #loader {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Main Container */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   background: #f4f6f8;
   margin: 0;
+  color: #444;
 }
 .container {
   max-width: 420px;
   background: #fff;
   margin: 40px auto;
-  padding: 20px;
+  padding: 25px 20px;
   text-align: center;
   border-radius: 6px;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+  animation: fadeInUp 1s ease;
 }
 h2 {
   color: #1b5fa7;
+  margin-bottom: 15px;
 }
 img.user-photo {
   width: 180px;
@@ -54,10 +69,13 @@ img.user-photo {
   object-fit: cover;
   border: 1px solid #ccc;
   margin-bottom: 10px;
+  border-radius: 4px;
+  animation: fadeIn 1s ease;
 }
 .label {
-  font-weight: bold;
+  font-weight: 600;
   margin-top: 12px;
+  color: #333;
 }
 .value {
   margin-bottom: 10px;
@@ -66,6 +84,37 @@ img.user-photo {
   font-size: 12px;
   color: #777;
   margin-top: 15px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+/* Top Banner */
+.top-banner {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.top-banner img {
+  width: 100%;
+  max-height: 120px;
+  border-radius: 6px;
+  object-fit: cover;
+  animation: fadeIn 1.2s ease;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Responsive */
+@media(max-width: 480px) {
+  .container { margin: 20px 10px; padding: 15px; }
+  img.user-photo { width: 150px; height: 170px; }
 }
 </style>
 </head>
@@ -74,14 +123,15 @@ img.user-photo {
 
 <!-- Loader Screen -->
 <div id="loader">
-  <img src="https://i.imgur.com/Ix9C9UL.png" alt="Banner">
-  <div>Loading, please wait...</div>
+  <img src="https://i.imgur.com/XA4Ev2E.gif" alt="Loading...">
 </div>
 
 <!-- Main Content -->
 <div class="container">
   <!-- Top Banner -->
-  <img src="https://i.imgur.com/Ix9C9UL.png" alt="Banner" style="width:100%; height:auto; border-radius:6px; margin-bottom:15px;">
+  <div class="top-banner">
+    <img src="https://i.imgur.com/Ix9C9UL.png" alt="Banner">
+  </div>
 
   <h2>Electronic Travel Authorization</h2>
   <p id="eid"></p>
